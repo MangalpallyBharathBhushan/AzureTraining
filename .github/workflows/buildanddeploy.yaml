@@ -18,10 +18,10 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore ./AzFuncSample.sln/HttpTriggerSample.csproj
+      run: dotnet restore AzFuncSample.sln
 
     - name: Build
-      run: dotnet build ./AzFuncSample.sln/HttpTriggerSample.csproj --configuration Release --no-restore
+      run: dotnet build AzFuncSample.sln --configuration Release --no-restore
 
     - name: Deploy to Azure
       uses: Azure/functions-action@v1
