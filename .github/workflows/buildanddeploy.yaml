@@ -1,0 +1,31 @@
+name: Build and deploy dotnet core app to Azure Function App - func-emvs-dev
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore AzFuncSample/HttpTriggerSample.csproj
+
+    - name: Build
+      run: dotnet build AzFuncSample/HttpTriggerSample.csproj --configuration Release --no-restore
+
+    - name: Deploy to Azure
+      uses: Azure/functions-action@v1
+      with:
+        app-name: 'func-emvs-dev'
+        package: '.'
+        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
